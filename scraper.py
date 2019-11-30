@@ -1,5 +1,4 @@
-# Import packages
-
+## Import packages
 import requests
 import re
 import os
@@ -14,12 +13,11 @@ from urllib.parse import urljoin
 import urllib.request as ur
 from html.parser import HTMLParser
 
-# Setting base URLs and target URLs
-# Defining function all_urls() for grabbing links for all pages on reed's website for the day
-
+## Setting base URLs and target URLs
 base = "http://www.reed.co.uk"
 url = "http://www.reed.co.uk/jobs?datecreatedoffset=Today"
 
+## Defining function all_urls() for grabbing links for all pages on reed's website for the day
 def all_urls():
     r = requests.get(url).content
     soup = BeautifulSoup(r, "html.parser")
@@ -34,18 +32,17 @@ def all_urls():
         yield  [urljoin(base, a["href"]) for a in soup.select("div.details h3.title a[href^=/jobs]")]
         nxt = soup.find("a", title="Go to next page")
 
-# Calling function and extracting links to each vacancy
-
+## Calling function and extracting links to each vacancy
 dflink = pd.DataFrame(columns=["links"], data=list(chain.from_iterable(all_urls())))
 
-# Define function strip_html()
-# Filling out a dataframe with a description + other vars for each vacancy
-
+## Define function strip_html()
 def strip_html(x):
     return lxml.html.fromstring(x).text_content() if x else ' '
 
+## Initializing empty dataframe
 emptydata = pd.DataFrame({"job_description":[], "salary_disp":[], "salary_min":[], "salary_max":[], "salary_time":[], "job_country":[], "job_region":[], "job_locality":[], "job_postcode":[], "job_type":[], "job_type_disp":[], "applications_ten":[], "link":[]})
 
+## Filling out dataframe with a description + other columns for each vacancy
 for index, row in dflink.iloc[0:dflink.size].iterrows():
     url = row['links']
     s = ur.urlopen(url).read()
@@ -71,13 +68,11 @@ for index, row in dflink.iloc[0:dflink.size].iterrows():
     except:
         pass
 
-# Rename dataframe
+## Rename dataframe
 reed_data = emptydata
 
-# How many listings have we scraped?
-
+## How many listings have we scraped?
 reed_data.size
 
-# Inspect listings as pd frame
-
+## Inspect listings as pd frame
 reed_data
