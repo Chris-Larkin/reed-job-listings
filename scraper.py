@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import urllib.request as ur
 from html.parser import HTMLParser
+import time
 
 ## Setting base URLs and target URLs
 base = "http://www.reed.co.uk"
@@ -65,6 +66,7 @@ for index, row in dflink.iloc[0:dflink.size].iterrows():
                 "link": [row]             
         })
         emptydata = emptydata.append(get_a_new_job)
+        time.sleep(1)
     except:
         pass
 
