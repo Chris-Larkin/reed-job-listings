@@ -1,5 +1,5 @@
 # reed-scraper
-This program scrapes and cleans job listings data from reed.co.uk for a given day. It extracts as columns: 
+This program scrapes and cleans job listings data from reed.co.uk for a given day. It crawls with a delay of 1 second between hits for primary data extraction exercise, so can take several hours to obtain all data. It extracts as columns: 
 
 ```applications_ten``` -> whether there have been ten or fewer applicants  
 ```job_country``` -> country where the job is located  
